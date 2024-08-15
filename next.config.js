@@ -4,6 +4,9 @@
  */
 await import("./src/env.js");
 
+import { createRequire } from 'module';
+const require = createRequire(import.meta.url);
+
 /** @type {import("next").NextConfig} */
 const config = {
   reactStrictMode: true,
@@ -19,5 +22,11 @@ const config = {
   },
   transpilePackages: ["geist"],
 };
+
+if (process.env.NEXT_PUBLIC_TEMPO) {
+  config["experimental"] = {
+    swcPlugins: [[require.resolve("tempo-devtools/swc"), {}]]
+  }
+}
 
 export default config;
